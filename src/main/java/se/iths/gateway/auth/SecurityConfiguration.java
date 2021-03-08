@@ -48,6 +48,8 @@ public class SecurityConfiguration {
                         swe.getResponse().setStatusCode(HttpStatus.FORBIDDEN))).and()
                 .authorizeExchange()
                 .pathMatchers("/auth/**").permitAll()
+                .pathMatchers(HttpMethod.GET,"/countries/**").authenticated()
+                .pathMatchers("/countries/**").hasRole("ADMIN")
                 .pathMatchers(HttpMethod.GET,"/songs/**").authenticated()
                 .pathMatchers("/songs/**").hasRole("ADMIN")
                 .anyExchange().authenticated()

@@ -20,17 +20,30 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: songs
+        - id: countries-service
+          uri: lb://countries-service
+          predicates:
+            - Path=/countries/**
+          filters:
+            - RewritePath=/countries/(?<path>.*), /countries/$\{path}
+        - id: songs-service
           uri: lb://songs
           predicates:
             - Path=/songs/**
           filters:
-            - RewritePath=/songs/(?<path>.*), /songs/$\{path}
-        - id: auth
+           - RewritePath=/songs/(?<path>.*), /songs/$\{path}
+        - id: combo-service
+          uri: lb://combo-service
+          predicates:
+            - Path=/combo/**
+          filters:
+            - RewritePath=/combo/(?<path>.*), /combo/$\{path}
+        - id: auth-service
           uri: http://localhost:9100
           predicates:
-            - Path=/auth/**
-            - Method=POST
+           - Path=/sign-up/**
+           - Path=/auth/**
+           - Method=POST
           filters:
-            - RewritePath=/auth/(?<path>.*), /auth/$\{path}
-
+           - RewritePath=/sign-up/(?<path>.*), /sign-up/$\{path}
+           - RewritePath=/auth/(?<path>.*), /auth/$\{path}
